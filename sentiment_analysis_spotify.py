@@ -15,7 +15,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from IPython.display import display
 
 
-# Authentication
+# Twitter API authentication codes
 access_token = "***"
 access_token_secret = "***"
 consumer_key = "***"
@@ -24,19 +24,21 @@ bearer_token = "***"
 client_id = "***"
 client_secret = "***"
 
+
 auth = tweepy.OAuthHandler(consumer_key, consumer_key_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
 warnings.filterwarnings("ignore", category=DeprecationWarning) # depricationwarning on piechart
 
-
+# to be used in PieChart
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
 
 
 keyword = input("please enter keyword or hashtag to search: ")
 noOfTweet = int(input("please enter how many tweets to analyze: "))
+
 
 tweets = tweepy.Cursor(api.search_tweets, lang='en', q=keyword).items(noOfTweet)
 positive = 0
@@ -47,6 +49,7 @@ tweet_list = []
 neutral_list = []
 negative_list = []
 positive_list = []
+
 
 for tweet in tweets:
     tweet_list.append(tweet.text)
@@ -195,6 +198,8 @@ def remove_stopword(text):
 
 
 tw_list['nostop'] = tw_list['tokenized'].apply(lambda x: remove_stopword(x))
+
+
 ps = nltk.PorterStemmer()  # apply porter
 
 
@@ -213,6 +218,7 @@ def clean_text(text):
     tokens = re.split('\W+', text_rc)  # tokenization
     text = [ps.stem(word) for word in tokens if word not in stopword]  # removes stopwords and stemming
     return text
+
 
 
 countVectorizer = CountVectorizer(analyzer=clean_text)
