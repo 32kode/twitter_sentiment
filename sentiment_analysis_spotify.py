@@ -214,8 +214,6 @@ def clean_text(text):
     text = [ps.stem(word) for word in tokens if word not in stopword]  # removes stopwords and stemming
     return text
 
-# something wrong with this
-
 
 countVectorizer = CountVectorizer(analyzer=clean_text)
 countVector = countVectorizer.fit_transform(tw_list['text'])
